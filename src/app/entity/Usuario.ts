@@ -1,6 +1,8 @@
-import { Entity,OneToOne,OneToMany, JoinColumn,PrimaryGeneratedColumn,CreateDateColumn,UpdateDateColumn, Column } from "typeorm"
+import { Entity,OneToOne,BeforeInsert,OneToMany, DeleteDateColumn,JoinColumn,PrimaryGeneratedColumn,CreateDateColumn,UpdateDateColumn, Column } from "typeorm"
 import { Endereco } from "./Endereco"
 import { Animal } from "./Animal"
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
 export enum Roles {
     ADMIN = "admin",
@@ -29,11 +31,11 @@ export class Usuario {
     @Column()
     senha: string
     
-    @Column()
-    nova_senha: string
+    // @Column()
+    // nova_senha: string
 
-    @Column({default:false})
-    deleted: boolean
+    @DeleteDateColumn()
+    deletedAt?: Date;
 
     @Column({
     type: "enum",
@@ -54,4 +56,19 @@ export class Usuario {
 
     @OneToMany(() => Animal, (animal) => animal.usuario)
     animais: Animal[]
-}
+    
+    @BeforeInsert()
+    async hashPassword() {
+      this.senha = await bcrypt.hash(this.senha, 12);
+    }
+  
+    static async comparePasswords(
+      candidatePassword: string,
+      hashedPassword: string
+    ) {
+      return await bcrypt.compare(candidatePassword, hashedPassword);
+    }
+    generateJwt() {
+      return jwt.sign({ id: this.id, definicao: this.definicao }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    }
+  }

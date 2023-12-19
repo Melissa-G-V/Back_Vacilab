@@ -1,4 +1,4 @@
-import { Entity,OneToOne,JoinColumn, PrimaryGeneratedColumn, Column, CreateDateColumn,UpdateDateColumn, Generated } from "typeorm"
+import { Entity,OneToOne,DeleteDateColumn,JoinColumn, PrimaryGeneratedColumn, Column, CreateDateColumn,UpdateDateColumn, Generated } from "typeorm"
 import { Usuario } from "./Usuario"
 
 
@@ -14,6 +14,10 @@ export class Pedido {
     @Column()
     aprovado: boolean
 
+
+    @DeleteDateColumn()
+    deletedAt?: Date;
+    
     @OneToOne(() => Usuario)
     @JoinColumn()
     usuario: Usuario

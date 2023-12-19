@@ -1,5 +1,5 @@
-import { Entity,ManyToOne, OneToOne,PrimaryGeneratedColumn, Column, CreateDateColumn,UpdateDateColumn, Generated } from "typeorm"
-import { Carteira } from "./Carteira"
+import { Entity,OneToMany,ManyToOne, OneToOne,DeleteDateColumn,PrimaryGeneratedColumn, Column, CreateDateColumn,UpdateDateColumn, Generated } from "typeorm"
+import { Carteira_Animal_Vacinas } from "./Carteira"
 
 
 export enum CLASSIFICACAO {
@@ -13,20 +13,6 @@ export enum DOSE {
     T= '3º Dose',
     R = 'Reforço',
 }
-// export enum FINALIDADE {
-//     ADENO = "Adenovirus",
-//     CINO = "Cinomose",
-//     BORDA = "Bordetella",
-//     GARD = "Gardia",
-//     LEPTO = "Leptospirose",
-//     LYME = "Lyme",    
-//     PARVO = "ParvoVirose",
-//     PARAINF = "Parainfluenza",
-//     RAIVA = "Raiva",
-//     H3N8 = "H3N8 - Influenza",
-//     SORO = "Soro Hiperimune"
-// }
-
 @Entity()
 export class Vacina {
 
@@ -34,7 +20,7 @@ export class Vacina {
     id: number
 
     @Column()
-    validade: Date
+    aplicado: Date
 
     @Column()
     expiracao: Date
@@ -63,11 +49,15 @@ export class Vacina {
         finalidade: string
 
     @Column()
-        aplicador: number
+        aplicador: string
 
-        
-    @Column({default:false})
-        deleted: boolean
+
+    @OneToMany(() => Carteira_Animal_Vacinas, carteira_Animal_Vacinas => carteira_Animal_Vacinas.vacina)
+        public carteira_Animal_Vacinas: Carteira_Animal_Vacinas[];
+
+
+    @DeleteDateColumn()
+        deletedAt?: Date;
 
     @CreateDateColumn()
     createdAt: Date;
@@ -75,6 +65,4 @@ export class Vacina {
     @UpdateDateColumn()
     updatedAt: Date;
 
-    @ManyToOne(() => Carteira, (carteira) => carteira.vacinas)
-    carteira: Carteira
 }

@@ -5,8 +5,9 @@ import { Veterinario } from "../app/entity/Veterinario"
 import { Animal } from "../app/entity/Animal"
 import { Vacina } from "../app/entity/Vacina"
 import { Pedido } from "../app/entity/Pedido"
-import { Carteira } from "../app/entity/Carteira"
+import { Carteira_Animal_Vacinas } from "../app/entity/Carteira"
 import { Endereco } from "../app/entity/Endereco"
+import { Peso } from "../app/entity/Peso"
 
 
 export const AppDataSource = new DataSource({
@@ -18,7 +19,7 @@ export const AppDataSource = new DataSource({
     database: "vacilab",
     synchronize: true,
     logging: false,
-    entities: [Usuario,Animal,Vacina,Carteira,Pedido,Veterinario,Endereco],
+    entities: [Usuario,Animal,Vacina,Carteira_Animal_Vacinas,Pedido,Veterinario,Endereco],
     migrations: [],
     subscribers: [],
 })
@@ -33,4 +34,15 @@ export const AppDataSource = new DataSource({
 //     entities: [],
 //     synchronize: true,
 //     logging: false,
+// })
+
+
+// export const DataSourceAuth = new DataSource({
+//     type: "mongodb",
+//     host: "localhost",
+//     port: 27017,
+//     database: "vacilab",
+//     entities: [ Peso],
+//     synchronize: true,
+//     logging: true,
 // })

@@ -1,4 +1,4 @@
-import { Entity, OneToOne,JoinColumn,PrimaryGeneratedColumn, Column, CreateDateColumn,UpdateDateColumn, } from "typeorm"
+import { Entity, OneToOne,JoinColumn,DeleteDateColumn,PrimaryGeneratedColumn, Column, CreateDateColumn,UpdateDateColumn, } from "typeorm"
 import { Endereco } from "./Endereco"
 
 // export enum Roles {
@@ -33,12 +33,13 @@ export class Veterinario {
 
     @Column()
     senha: string
+
     
     @Column()
     nova_senha: string
 
-    @Column({default:false})
-    deleted: boolean
+    @DeleteDateColumn()
+    deletedAt?: Date;
 
     @OneToOne(() => Endereco)
     @JoinColumn()

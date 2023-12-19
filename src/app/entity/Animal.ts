@@ -1,5 +1,5 @@
-import { Entity,OneToOne,ManyToOne,JoinColumn, PrimaryGeneratedColumn, Column, CreateDateColumn,UpdateDateColumn, Generated } from "typeorm"
-import { Carteira } from "./Carteira"
+import { Entity,OneToOne, OneToMany,DeleteDateColumn,ManyToOne,JoinColumn, PrimaryGeneratedColumn, Column, CreateDateColumn,UpdateDateColumn, Generated } from "typeorm"
+import { Carteira_Animal_Vacinas } from "./Carteira"
 import { Usuario } from "./Usuario"
 
 
@@ -7,7 +7,8 @@ export enum Especie {
     CAES = "Cachorro",
     GATOS = "Gato",
     AVES = "Passaro",
-    ROEDORES = "Rato/Hamster"
+    COELHO = "Coelho",
+    ROEDORES = "Roedor"
 }
 
 @Entity()
@@ -23,16 +24,24 @@ export class Animal {
     cor: string
 
     @Column()
-    raca: string
+    genero: string
+
+    // @Column()
+    // imagem: string
 
     @Column()
-    peso: number
+    raca: string
+
+    // @Column()
+    // peso: number
 
     @Column()
     data_nascimento: Date
 
     @Column()
     compartilhado: boolean
+    @Column()
+    castrado: boolean
 
     @Column()
     microchip: boolean
@@ -40,8 +49,8 @@ export class Animal {
     @Column({default:false})
     mortis: boolean
 
-    @Column({default:false})
-    deleted: boolean
+    @DeleteDateColumn()
+    deletedAt?: Date;
 
 
     @Column({unique:true})
@@ -61,10 +70,8 @@ export class Animal {
     @UpdateDateColumn()
     updatedAt: Date;
 
-    @OneToOne(() => Carteira)
-    @JoinColumn()
-    carteira: Carteira
-
+    @OneToMany(() => Carteira_Animal_Vacinas, carteira_Animal_Vacinas => carteira_Animal_Vacinas.animal)
+    public carteira_Animal_Vacinas: Carteira_Animal_Vacinas[];
 
     @ManyToOne(() => Usuario, (usuario) => usuario.animais)
     usuario: Usuario

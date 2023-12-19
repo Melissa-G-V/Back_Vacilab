@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn,CreateDateColumn,UpdateDateColumn, Column } from "typeorm"
+import { Entity, PrimaryGeneratedColumn,DeleteDateColumn,CreateDateColumn,UpdateDateColumn, Column } from "typeorm"
 import { Usuario } from "./Usuario"
 
 
@@ -9,13 +9,19 @@ export class Endereco {
     id: number
 
     @Column()
-    logradouro: string
+    residencia: string
 
     @Column()
     bairo: string
 
     @Column()
     cep: string
+
+    @DeleteDateColumn()
+    deletedAt?: Date;
+    
+    @Column()
+    num_casa: number
 
     @Column()
     localidade: string
